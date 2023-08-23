@@ -35,6 +35,7 @@ def spearman_rin_pmi(data_frame):
 if __name__ == '__main__':
     files_location = "../PMI_analysis/working_data_PMI/PMI_Dana_DATA/"
     df = pd.read_csv(files_location + "RUSH_patients_info.csv")
+    # raw_counts = pd.read_csv(files_location + "raw_counts_combined_tRF.csv")
     draw_volcano_plots(df)
 
     # check spearman correlation

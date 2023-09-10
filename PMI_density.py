@@ -112,6 +112,8 @@ if __name__ == '__main__':
     res_df['type'] = res_df.index.str.split('_').str[:1].str.join(' ')
     res_df['len'] = res_df.index.str.split('_').str[1]
 
+    res_df.to_csv(working_dir + 'res_sumed_by_type_len_intermediate.csv')
+
     trf_3 = res_df[res_df['type'] == '3\'-tRF']
     trf_5 = res_df[res_df['type'] == '5\'-tRF']
     trf_i = res_df[res_df['type'] == 'i-tRF']
@@ -132,23 +134,23 @@ if __name__ == '__main__':
     # plt.tight_layout()
     # plt.show()
 
-    # Create subplots for multiple density plots
-    fig, axes = plt.subplots(nrows=1, ncols=5, figsize=(15, 5), sharey=True)
-
-    # Plot density plots for each condition in each subplot
-    trf_3[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[0],
-                                                                                   title='3\'-tRF')
-    trf_5[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[1],
-                                                                                   title='5\'-tRF')
-    trf_i[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[2],
-                                                                                   title='i-tRF')
-    trf_3_half[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[3],
-                                                                                        title='3\'-half')
-    trf_5_half[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[4],
-                                                                                        title='5\'-half')
+    # # Create subplots for multiple density plots
+    # fig, axes = plt.subplots(nrows=1, ncols=5, figsize=(15, 5), sharey=True)
+    #
+    # # Plot density plots for each condition in each subplot
+    # trf_3[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[0],
+    #                                                                                title='3\'-tRF')
+    # trf_5[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[1],
+    #                                                                                title='5\'-tRF')
+    # trf_i[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[2],
+    #                                                                                title='i-tRF')
+    # trf_3_half[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[3],
+    #                                                                                     title='3\'-half')
+    # trf_5_half[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[4],
+    #                                                                                     title='5\'-half')
 
     # Adjust layout and show the plots
-    plt.tight_layout()
-    plt.show()
+    # plt.tight_layout()
+    # plt.show()
 
     print("All Done")

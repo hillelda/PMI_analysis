@@ -1,4 +1,6 @@
 # Hillel Darshan 8/21/23
+# meta analysis, for understanding the features and their correlation to RIN and PMI
+
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go

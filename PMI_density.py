@@ -65,29 +65,29 @@ def calculate_result_df(sums_df):
     sums_df_t = sums_df_t.merge(patients_df, on='Name', how='left', sort=False)
 
     intercept_lst = [
-        ('AD pmi<=5', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 5)),
-        ('AD 5<pmi<=7', ((sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5))),
-        ('AD 7<pmi<=9', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 9) & (sums_df_t['pmi'] > 7)),
-        ('AD 9<pmi<=11', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
-        ('AD 11<pmi<=13', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
-        ('AD 13<pmi<=15', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
-        ('AD 15<pmi', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] > 15)),
+        ('AD. 0.pmi.5', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 5)),
+        ('AD. 5.pmi.7', ((sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5))),
+        ('AD. 7.pmi.9', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 9) & (sums_df_t['pmi'] > 7)),
+        ('AD. 9.pmi.11', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
+        ('AD. 11.pmi.13', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
+        ('AD. 13.pmi.15', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
+        ('AD. 15.pmi.1000', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] > 15)),
 
-        ('MMCI pmi<=5', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 5)),
-        ('MMCI 5<pmi<=7', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5)),
-        ('MMCI 7<pmi<=9', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 9) & (sums_df_t['pmi'] > 7)),
-        ('MMCI 9<pmi<=11', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
-        ('MMCI 11<pmi<=13', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
-        ('MMCI 13<pmi<=15', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
-        ('MMCI 15<pmi', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] > 15)),
+        ('MMCI. 0.pmi.5', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 5)),
+        ('MMCI. 5.pmi.7', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5)),
+        ('MMCI. 7.pmi.9', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 9) & (sums_df_t['pmi'] > 7)),
+        ('MMCI. 9.pmi.11', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
+        ('MMCI. 11.pmi.13', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
+        ('MMCI. 13.pmi.15', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
+        ('MMCI. 15.pmi.1000', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] > 15)),
 
-        ('NCI pmi<=5', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 5)),
-        ('NCI 5<pmi<=7', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5)),
-        ('NCI 7<pmi<=9', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 9) & (sums_df_t['pmi'] > 7)),
-        ('NCI 9<pmi<=11', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
-        ('NCI 11<pmi<=13', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
-        ('NCI 13<pmi<=15', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
-        ('NCI 15<pmi', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] > 15))
+        ('NCI. 0.pmi.5', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 5)),
+        ('NCI. 5.pmi.7', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5)),
+        ('NCI. 7.pmi.9', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 9) & (sums_df_t['pmi'] > 7)),
+        ('NCI. 9.pmi.11', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
+        ('NCI. 11.pmi.13', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
+        ('NCI. 13.pmi.15', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
+        ('NCI. 15.pmi.1000', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] > 15))
     ]
     res_dfs = []
     for intercept in intercept_lst:
@@ -114,11 +114,12 @@ if __name__ == '__main__':
 
     res_df.to_csv(working_dir + 'res_sumed_by_type_len_intermediate.csv')
 
-    trf_3 = res_df[res_df['type'] == '3\'-tRF']
-    trf_5 = res_df[res_df['type'] == '5\'-tRF']
-    trf_i = res_df[res_df['type'] == 'i-tRF']
-    trf_3_half = res_df[res_df['type'] == '3\'-half']
-    trf_5_half = res_df[res_df['type'] == '5\'-half']
+
+    # trf_3 = res_df[res_df['type'] == '3\'-tRF']
+    # trf_5 = res_df[res_df['type'] == '5\'-tRF']
+    # trf_i = res_df[res_df['type'] == 'i-tRF']
+    # trf_3_half = res_df[res_df['type'] == '3\'-half']
+    # trf_5_half = res_df[res_df['type'] == '5\'-half']
 
     # # Create subplots for multiple density plots
     # fig, axes = plt.subplots(nrows=1, ncols=5, figsize=(15, 5), sharey=True)
@@ -153,4 +154,40 @@ if __name__ == '__main__':
     # plt.tight_layout()
     # plt.show()
 
+
+
+    # Read CSV file
+    # res = pd.read_csv('output_density.csv')
+    res = pd.read_csv(working_dir + 'res_sumed_by_type_len_intermediate.csv', index_col=0)
+
+    # res = res_df.copy()
+
+    # Normalize columns
+    for c in range(0, res.shape[1] - 2):
+        res.iloc[:, c] = res.iloc[:, c] / (res.iloc[:, c].sum() + 1)
+
+    # Melt the dataframe
+    res = pd.melt(res, id_vars=['type', 'len'], var_name='group')
+
+    # Convert 'len' to numeric, handling any non-numeric values
+    res['len'] = pd.to_numeric(res['len'], errors='coerce')
+    res = res.dropna(subset=['len'])
+
+    # Extract cond and pmi
+    res['cond'] = res['group'].apply(lambda x: x.split('.')[0])
+    res['pmi'] = res['group'].apply(lambda x: x.split('.')[-1])
+
+
+    # g = sns.FacetGrid(res, col='cond', row='type', margin_titles=True, xlim=(res['len'].min(), res['len'].max()))
+    # g.map_dataframe(sns.lineplot, x='len', y='value', hue='pmi')
+    # g.add_legend(title='pmi', label_order=res['pmi'].unique())
+
+    g = sns.FacetGrid(res, col='cond', row='type', margin_titles=True, xlim=(res['len'].min(), res['len'].max()))
+    g.map_dataframe(sns.lineplot, x='len', y='value', hue='pmi')
+    g.add_legend(title='pmi', label_order=res['pmi'].unique(), labels=res['pmi'].unique())
+
+
+    plt.show()
+
+    plt.savefig(working_dir + 'density_python.png')
     print("All Done")

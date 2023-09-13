@@ -14,7 +14,7 @@ TRF_FILE = "tRNA_Exclusive_Combined_data.csv"
 TRF_META = "tRF_meta.csv"
 
 PNG_OUTPUT = '../PMI_analysis/density_python.png'
-OUTPUT_FILE = 'res_summed_by_type_len.csv'
+OUTPUT_FILE = '../PMI_analysis/res_summed_by_type_len.csv'
 # ################################
 
 def calculate_sums_df(patient_df):
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     patients_df = calculate_patients_df()
     cur_sums_df = calculate_sums_df(df)
     cur_res_df = calculate_result_df(cur_sums_df)
-    cur_res_df.to_csv(WORKING_DIR + OUTPUT_FILE)
+    cur_res_df.to_csv(OUTPUT_FILE)
     p = plot_data(cur_res_df)
     plt.show()
     plt.savefig(PNG_OUTPUT)

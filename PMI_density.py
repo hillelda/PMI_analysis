@@ -1,11 +1,21 @@
 # Hillel Darshan 8/22/23
 
 from itertools import product
-import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# ########### Global vars ########
+WORKING_DIR = "../PMI_analysis/working_data_PMI/PMI_Adi_DATA/"
+DATA_SET = "rush dataset_662_basic_08-10-2023.csv"
+COLD_DATA = "cold_data_ros.csv"
+LAB_ID_FILE = "lab_name_id_table.csv"
+TRF_FILE = "tRNA_Exclusive_Combined_data.csv"
+TRF_META = "tRF_meta.csv"
+
+PNG_OUTPUT = 'density_python.png'
+OUTPUT_FILE = 'res_summed_by_type_len.csv'
+# ################################
 
 def calculate_sums_df(patient_df):
     # Generate all possible combinations of conditions
@@ -28,9 +38,9 @@ def calculate_sums_df(patient_df):
 
 def calculate_patients_df():
     # df of patients
-    pmi_projid = pd.read_csv(working_dir + "rush dataset_662_basic_08-10-2023.csv")
-    cold_projid = pd.read_csv(working_dir + "cold_data_ros.csv")
-    lab_id = pd.read_csv(working_dir + "lab_name_id_table.csv")
+    pmi_projid = pd.read_csv(WORKING_DIR + DATA_SET)
+    cold_projid = pd.read_csv(WORKING_DIR + COLD_DATA)
+    lab_id = pd.read_csv(WORKING_DIR + LAB_ID_FILE)
     lab_id = lab_id.merge(pmi_projid, on='projid', how='left')
     lab_id = lab_id.merge(cold_projid, on='projid', how='left')
 
@@ -45,9 +55,9 @@ def calculate_patients_df():
 
 def calculate_trf_df():
     # df of tRFs
-    trf_df = pd.read_csv(working_dir + "tRNA_Exclusive_Combined_data.csv")
+    trf_df = pd.read_csv(WORKING_DIR + TRF_FILE)
     trf_df.columns = ['tRF name'] + list(trf_df.columns[1:])
-    meta = pd.read_csv(working_dir + "tRF_meta.csv")
+    meta = pd.read_csv(WORKING_DIR + TRF_META)
     meta.columns = ['tRF name'] + list(meta.columns[1:])
     trf_df = trf_df.merge(meta, on='tRF name', how='left')
     trf_df.drop(['trf', 'tRF sequence', 'details', 'trna', 'nuclear'], axis=1, inplace=True)
@@ -71,7 +81,7 @@ def calculate_result_df(sums_df):
         ('AD. 9.pmi.11', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
         ('AD. 11.pmi.13', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
         ('AD. 13.pmi.15', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
-        ('AD. 15.pmi.1000', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] > 15)),
+        ('AD. 15.pmi.100', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] > 15)),
 
         ('MMCI. 0.pmi.5', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 5)),
         ('MMCI. 5.pmi.7', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5)),
@@ -79,7 +89,7 @@ def calculate_result_df(sums_df):
         ('MMCI. 9.pmi.11', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
         ('MMCI. 11.pmi.13', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
         ('MMCI. 13.pmi.15', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
-        ('MMCI. 15.pmi.1000', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] > 15)),
+        ('MMCI. 15.pmi.100', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] > 15)),
 
         ('NCI. 0.pmi.5', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 5)),
         ('NCI. 5.pmi.7', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5)),
@@ -87,8 +97,9 @@ def calculate_result_df(sums_df):
         ('NCI. 9.pmi.11', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
         ('NCI. 11.pmi.13', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
         ('NCI. 13.pmi.15', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
-        ('NCI. 15.pmi.1000', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] > 15))
+        ('NCI. 15.pmi.100', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] > 15))
     ]
+
     res_dfs = []
     for intercept in intercept_lst:
         new_row = sums_df_t[intercept[1]].sum()
@@ -97,97 +108,39 @@ def calculate_result_df(sums_df):
     result_df = pd.concat(res_dfs, axis=1)
 
     result_df = result_df.iloc[:-7] # delete last rows, sums of meta-data
+    result_df['type'] = result_df.index.str.split('_').str[:1].str.join(' ')
+    result_df['len'] = result_df.index.str.split('_').str[1]
 
     return result_df
 
 
+def plot_data(df):
+    # Normalize columns
+    for col in range(0, df.shape[1] - 2):
+        df.iloc[:, col] = df.iloc[:, col] / (df.iloc[:, col].sum() + 1)
+    # Melt the dataframe
+    res = pd.melt(df, id_vars=['type', 'len'], var_name='group')
+    # Convert 'len' to numeric, handling any non-numeric values
+    res['len'] = pd.to_numeric(res['len'], errors='coerce')
+    res = res.dropna(subset=['len'])
+    # Extract cond and pmi
+    res['condition'] = res['group'].apply(lambda x: x.split('.')[0])
+    res['pmi'] = res['group'].apply(lambda x: x.split('.')[-1])
+    # plot
+    g = sns.FacetGrid(res, col='condition', row='type', margin_titles=True, xlim=(res['len'].min(), res['len'].max()))
+    g.map_dataframe(sns.lineplot, x='len', y='value', hue='pmi')
+    g.add_legend(title='pmi', label_order=res['pmi'].unique(), labels=res['pmi'].unique())
+
+    return g
+
+
 if __name__ == '__main__':
-    working_dir = "../PMI_analysis/working_data_PMI/PMI_Adi_DATA/"
     df = calculate_trf_df()
     patients_df = calculate_patients_df()
     cur_sums_df = calculate_sums_df(df)
     cur_res_df = calculate_result_df(cur_sums_df)
-
-    res_df = cur_res_df
-    res_df['type'] = res_df.index.str.split('_').str[:1].str.join(' ')
-    res_df['len'] = res_df.index.str.split('_').str[1]
-
-    res_df.to_csv(working_dir + 'res_sumed_by_type_len_intermediate.csv')
-
-
-    # trf_3 = res_df[res_df['type'] == '3\'-tRF']
-    # trf_5 = res_df[res_df['type'] == '5\'-tRF']
-    # trf_i = res_df[res_df['type'] == 'i-tRF']
-    # trf_3_half = res_df[res_df['type'] == '3\'-half']
-    # trf_5_half = res_df[res_df['type'] == '5\'-half']
-
-    # # Create subplots for multiple density plots
-    # fig, axes = plt.subplots(nrows=1, ncols=5, figsize=(15, 5), sharey=True)
-    #
-    # # Plot density plots for each condition
-    # trf_3[['AD pmi<=5', 'len']].plot(kind='density', ax=axes[0], title='3\'-tRF')
-    # trf_5[['AD pmi<=5', 'len']].plot(kind='density', ax=axes[1], title='5\'-tRF')
-    # trf_i[['AD pmi<=5', 'len']].plot(kind='density', ax=axes[2], title='i-tRF')
-    # trf_3_half[['AD pmi<=5', 'len']].plot(kind='density', ax=axes[3], title='3\'-half')
-    # trf_5_half[['AD pmi<=5', 'len']].plot(kind='density', ax=axes[4], title='5\'-half')
-    #
-    # # Adjust layout and show the plots
-    # plt.tight_layout()
-    # plt.show()
-
-    # # Create subplots for multiple density plots
-    # fig, axes = plt.subplots(nrows=1, ncols=5, figsize=(15, 5), sharey=True)
-    #
-    # # Plot density plots for each condition in each subplot
-    # trf_3[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[0],
-    #                                                                                title='3\'-tRF')
-    # trf_5[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[1],
-    #                                                                                title='5\'-tRF')
-    # trf_i[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[2],
-    #                                                                                title='i-tRF')
-    # trf_3_half[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[3],
-    #                                                                                     title='3\'-half')
-    # trf_5_half[['AD pmi<=5', 'AD 5<pmi<=7', 'AD 7<pmi<=9', 'AD 9<pmi<=11', 'len']].plot(kind='density', ax=axes[4],
-    #                                                                                     title='5\'-half')
-
-    # Adjust layout and show the plots
-    # plt.tight_layout()
-    # plt.show()
-
-
-
-    # Read CSV file
-    # res = pd.read_csv('output_density.csv')
-    res = pd.read_csv(working_dir + 'res_sumed_by_type_len_intermediate.csv', index_col=0)
-
-    # res = res_df.copy()
-
-    # Normalize columns
-    for c in range(0, res.shape[1] - 2):
-        res.iloc[:, c] = res.iloc[:, c] / (res.iloc[:, c].sum() + 1)
-
-    # Melt the dataframe
-    res = pd.melt(res, id_vars=['type', 'len'], var_name='group')
-
-    # Convert 'len' to numeric, handling any non-numeric values
-    res['len'] = pd.to_numeric(res['len'], errors='coerce')
-    res = res.dropna(subset=['len'])
-
-    # Extract cond and pmi
-    res['cond'] = res['group'].apply(lambda x: x.split('.')[0])
-    res['pmi'] = res['group'].apply(lambda x: x.split('.')[-1])
-
-
-    # g = sns.FacetGrid(res, col='cond', row='type', margin_titles=True, xlim=(res['len'].min(), res['len'].max()))
-    # g.map_dataframe(sns.lineplot, x='len', y='value', hue='pmi')
-    # g.add_legend(title='pmi', label_order=res['pmi'].unique())
-
-    g = sns.FacetGrid(res, col='cond', row='type', margin_titles=True, xlim=(res['len'].min(), res['len'].max()))
-    g.map_dataframe(sns.lineplot, x='len', y='value', hue='pmi')
-    g.add_legend(title='pmi', label_order=res['pmi'].unique(), labels=res['pmi'].unique())
-
-
+    cur_res_df.to_csv(WORKING_DIR + OUTPUT_FILE)
+    p = plot_data(cur_res_df)
     plt.show()
-
-    plt.savefig(working_dir + 'density_python.png')
+    plt.savefig(WORKING_DIR + PNG_OUTPUT)
     print("All Done")

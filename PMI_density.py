@@ -132,7 +132,7 @@ def plot_data(df):
     # plot
     g = sns.FacetGrid(res, col='condition', row='type', margin_titles=True,
                       xlim=(res['len'].min(), res['len'].max()), ylim=(res['value'].min(), res['value'].max()))
-    g.map_dataframe(sns.lineplot, x='len', y='value', hue='pmi')
+    g.map_dataframe(sns.lineplot, x='len', y='value', hue='pmi', linewidth=0.5)
     g.add_legend(title='pmi', label_order=res['pmi'].unique().tolist())
 
     return g
@@ -145,6 +145,6 @@ if __name__ == '__main__':
     cur_res_df = calculate_result_df(cur_sums_df)
     cur_res_df.to_csv(OUTPUT_FILE)
     p = plot_data(cur_res_df)
+    plt.savefig(PNG_OUTPUT, dpi=900)
     plt.show()
-    plt.savefig(PNG_OUTPUT)
     print("All Done")

@@ -74,31 +74,34 @@ def calculate_result_df(sums_df):
     sums_df_t['Name'] = sums_df_t.index.str.split('_').str[:2].str.join(' ')
     sums_df_t = sums_df_t.merge(patients_df, on='Name', how='left', sort=False)
 
-    intercept_lst = [
-        ('AD 0<pmi<5', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 5)),
-        ('AD 5<pmi<7', ((sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5))),
-        ('AD 7<pmi<9', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 9) & (sums_df_t['pmi'] > 7)),
-        ('AD 9<pmi<11', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
-        ('AD 11<pmi<13', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
-        ('AD 13<pmi<15', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
-        ('AD 15<pmi<100', (sums_df_t['cogdx'] == 4) & (sums_df_t['pmi'] > 15)),
+    # generate intercept list
+    intercept_lst = []
 
-        ('MMCI 0<pmi<5', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 5)),
-        ('MMCI 5<pmi<7', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5)),
-        ('MMCI 7<pmi<9', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 9) & (sums_df_t['pmi'] > 7)),
-        ('MMCI 9<pmi<11', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
-        ('MMCI 11<pmi<13', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
-        ('MMCI 13<pmi<15', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
-        ('MMCI 15<pmi<100', (sums_df_t['cogdx'] == 2) & (sums_df_t['pmi'] > 15)),
-
-        ('NCI 0<pmi<5', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 5)),
-        ('NCI 5<pmi<7', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 7) & (sums_df_t['pmi'] > 5)),
-        ('NCI 7<pmi<9', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 9) & (sums_df_t['pmi'] > 7)),
-        ('NCI 9<pmi<11', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 11) & (sums_df_t['pmi'] > 9)),
-        ('NCI 11<pmi<13', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 13) & (sums_df_t['pmi'] > 11)),
-        ('NCI 13<pmi<15', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] <= 15) & (sums_df_t['pmi'] > 13)),
-        ('NCI 15<pmi<100', (sums_df_t['cogdx'] == 1) & (sums_df_t['pmi'] > 15))
+    categories = [
+        ('AD', 4),
+        ('MMCI', 2),
+        ('NCI', 1)
     ]
+
+    pmi_ranges = [
+        (0, 5),
+        (5, 7),
+        (7, 9),
+        (9, 11),
+        (11, 13),
+        (13, 15),
+        (15, 100)
+    ]
+
+    for category, cogdx in categories:
+        for pmi_range in pmi_ranges:
+            label = f'{category} {pmi_range[0]}<pmi<{pmi_range[1]}'
+            condition = (sums_df_t['cogdx'] == cogdx) & (sums_df_t['pmi'] <= pmi_range[1])
+
+            if pmi_range[0] > 0:
+                condition &= (sums_df_t['pmi'] > pmi_range[0])
+
+            intercept_lst.append((label, condition))
 
     res_dfs = []
     for intercept in intercept_lst:

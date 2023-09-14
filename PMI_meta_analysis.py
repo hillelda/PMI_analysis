@@ -21,11 +21,12 @@ def draw_volcano_plots(df1):
                      yaxis_title="RIN")
 
     pl.show()
+    pl.write_image('../PMI_analysis/pmi_rin.jpeg')
 
 
 def spearman_rin_pmi(data_frame):
-    # data_frame = data_frame[data_frame['brain_region'] != "NucAcc"]
-    # data_frame = data_frame[data_frame['msex'] != "Male"]
+    data_frame = data_frame[data_frame['brain_region'] != "NucAcc"]
+    data_frame = data_frame[data_frame['msex'] != "Male"]
     data_frame = data_frame[data_frame['study'] == "MAP"]
     cols_to_keep = ['pmi', 'RIN']
     sp = data_frame[cols_to_keep]

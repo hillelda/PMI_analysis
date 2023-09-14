@@ -2,7 +2,8 @@
 
 Recent research suggests that Post-Mortem Interval (PMI) plays a critical role when sequencing mRNA.
 This project aims to investigate whether the same holds true for tRNA fragments (tRFs), which have been implicated in 
-regulating protein synthesis within cells.
+regulating protein synthesis within cells. Although evidence for the relevance of PMI to tRF counts was found in liver tissue,
+this project analyzed brain tissue, where much less enzymes are found, and therefore we assumed that it is different from liver tissue. 
 
 ### Objective
 

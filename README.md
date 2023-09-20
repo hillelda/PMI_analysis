@@ -35,4 +35,4 @@ The dataset is available on request from the RUSH institution, and is not provid
 ### Project Team
 
 This analysis was conducted at Soreq's lab, Edmond and Lily Safra Center for Brain Sciences; under the guidance of Prof. Hermona Soreq.
-The project team involved in this analysis includes Hillel Darshan, Nimrod Madrer, and  Dr. Daived Greenberg. 
+The project team involved in this analysis includes Hillel Darshan, Nimrod Madrer, and  Dr. David Greenberg. 

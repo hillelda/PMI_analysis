@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 # ########### Global vars ########
 WORKING_DIR = "../PMI_analysis/working_data_PMI/PMI_Adi_DATA/"
-DATA_SET = "rush dataset_662_basic_08-10-2023.csv"
+DATA_SET = "basic_08-10-2023.csv"
 COLD_DATA = "cold_data_ros.csv"
 LAB_ID_FILE = "lab_name_id_table.csv"
 TRF_FILE = "tRNA_Exclusive_Combined_data.csv"
